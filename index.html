@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstructIT</title>
+    <link rel="stylesheet" href="./main.css">
+
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+</head>
+
+<body>
+    <h1>
+        InstructIT
+    </h1>
+
+    <input type="text" placeholder="Instructor Name" />
+    <input type="text" placeholder="Instructor Age">
+
+    <button>Update Instructor</button>
+
+    <h2 id="instructor"></h2>
+
+    <script>
+        // this initializes the web3 if web3 is already injected in browser
+        // metamask extension and mist browser already have the web3 provider injected.
+        if (typeof web3 !== 'undefined') web3 = new Web3(web3.currentProvider);
+
+        // if there is no web3 provider injected then initialize new provider
+        else web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+
+        // set the current account since there are 10 or more accounts in ganache
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+
+        // use the abi in web3
+        var InstructIT = new web3.eth.Contract([{
+                "inputs": [],
+                "name": "getInstructor",
+                "outputs": [{
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [{
+                        "internalType": "string",
+                        "name": "_fName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_age",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "setInstructor",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ], "0x52b935f5223EC587F2220765924e439761af3CD8")
+
+        console.log(InstructIT._jsonInterface[0])
+    </script>
+</body>
+
+</html>
